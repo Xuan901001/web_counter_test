@@ -16,29 +16,13 @@ COUNT=$((COUNT + 1))
 # 更新計數器檔案
 echo "$COUNT" > "$COUNTER_FILE"
 
-# 將數字拆分為一個個字符
-DIGITS=$(printf "%05d" "$COUNT") # 保證至少5位數，補零
+DIGITS=$(printf "%05d" "$COUNT")
 
-# 輸出 HTML 頁面
-echo "Content-type: text/html"
+# 生成圖片
+IMAGE_FILE="/tmp/counter.png"
+convert -size 300x100 xc:white -gravity center \
+    -pointsize 48 -fill black -annotate 0 "$DIGITS" "$IMAGE_FILE"
+
+echo "Content-type: image/png"
 echo ""
-echo "<!DOCTYPE html>"
-echo "<html lang='zh-TW'>"
-echo "<head><meta charset='UTF-8'><title>計數器</title>"
-echo "<style>"
-echo "body { font-family: Arial, sans-serif; text-align: center; margin-top: 20%; }"
-echo ".digit { font-size: 48px; font-weight: bold; margin: 0 2px; display: inline-block; }"
-echo ".digit:nth-child(1), .digit:nth-child(2), .digit:nth-child(3), .digit:nth-child(4) { color: orange; }"
-echo ".digit:nth-child(5) { color: cyan; }"
-echo "</style>"
-echo "</head>"
-echo "<body>"
-echo "<h1>訪問次數：</h1>"
-echo "<div>"
-for (( i=0; i<${#DIGITS}; i++ )); do
-    DIGIT=${DIGITS:$i:1}
-    echo "<span class='digit'>$DIGIT</span>"
-done
-echo "</div>"
-echo "</body>"
-echo "</html>"
+cat "$IMAGE_FILE"
