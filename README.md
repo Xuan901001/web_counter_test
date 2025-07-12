@@ -4,5 +4,5 @@
 
 '''
 嵌入用法:
-# <img src="網址:如ngrok" width="300" height="100" />
+$$<img src="網址:如ngrok" width="300" height="100" />$$
 '''
